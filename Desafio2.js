@@ -1,4 +1,4 @@
-const fs=requiere('fs');
+const fs=require('fs');
 
 class Contenedor{
 
@@ -6,16 +6,16 @@ class Contenedor{
         this.name=name;
     }
 
-    archivo(){
-        let contenido= await fs.promises.readFile(`./${this.name}`,`utf-8`) 
+   async archivo(){
+        let contenido= await fs.promises.readFile(`./${this.name}`,`utf-8`);
         let contenidoJSon=JSON.parse(contenido); //entra en el archivo porque no puede manejar string como arreglo
-        return contenidoJSon
+        return contenidoJSon;
     }
 
     async save(Object){
         try{
-            let contJS=archivo()
-            let match = contJS.find((element => element.title == Object.title))
+            let contJS=archivo();
+            let match = contJS.find((element => element.title == Object.title));
             if (match == undefined){
                 let ultimoIndice=contJS.length-1; 
                 let ultimoId=contJS[ultimoIndice].id;
@@ -43,7 +43,7 @@ class Contenedor{
     }
 
     async getAll(){
-        return (archivo())
+        return (archivo());
     }
 
     async deleteById(Number){
