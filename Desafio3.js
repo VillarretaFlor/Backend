@@ -14,9 +14,7 @@ class Contenedor {
       let contenido = await fs.promises.readFile(`./${this.name}`, `utf-8`);
       let contenidoJSon = JSON.parse(contenido); //entra en el archivo porque no puede manejar string como arreglo
       return contenidoJSon;
-    } catch (error) {
-      return error;
-    }
+    } catch (error) {return error;}
   }
 
   async save(Object) {
@@ -32,9 +30,7 @@ class Contenedor {
         await fs.promise.writeFile(`./${this.name}`, JSON.stringify(contJS));
         console.log(id);
       } else console.log("EL objeto ya existe");
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {console.log(error);}
     return this.id;
   }
 
@@ -44,10 +40,7 @@ class Contenedor {
       await this.archivo().forEach((element) => {
         if (element.id == Number) contenidoExtraidoDelArray = element;
       });
-    } catch (error) {
-      console.log(error);
-    }
-
+    } catch (error) {console.log(error);}
     return contenidoExtraidoDelArray;
   }
 
@@ -61,9 +54,7 @@ class Contenedor {
       const procutoRandom =
         productos[Math.floor(Math.random() * productos.length)];
       return procutoRandom;
-    } catch (error) {
-      return error;
-    }
+    } catch (error) {return error;}
   }
 
   async deleteById(Number) {
@@ -75,17 +66,13 @@ class Contenedor {
         `./${this.name}`,
         JSON.stringify(contenidoNuevo)
       );
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {console.log(error);}
   }
 
   async deleteAll() {
     try {
       await fs.promises.writeFile(`./${this.name}`, JSON.stringify([]));
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {console.log(error);}
   }
 }
 
