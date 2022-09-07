@@ -6,16 +6,19 @@ class Contenedor{
         this.name=name;
     }
 
-   async archivo(){
-        let contenido= await fs.promises.readFile(`./${this.name}`,`utf-8`);
-        let contenidoJSon=JSON.parse(contenido); //entra en el archivo porque no puede manejar string como arreglo
-        return contenidoJSon;
+    async archivo(){
+        try{
+            let contenido= await fs.promises.readFile(`./${this.name}`,`utf-8`) 
+            let contenidoJSon=JSON.parse(contenido); //entra en el archivo porque no puede manejar string como arreglo
+            return contenidoJSon;
+        } catch (error) {return error;}
+        
     }
 
     async save(Object){
         try{
-            let contJS=archivo();
-            let match = contJS.find((element => element.title == Object.title));
+            let contJS= await this.archivo();
+            let match = contJS.find((element => element.title == Object.title))
             if (match == undefined){
                 let ultimoIndice=contJS.length-1; 
                 let ultimoId=contJS[ultimoIndice].id;
@@ -27,13 +30,13 @@ class Contenedor{
             } else console.log ("EL objeto ya existe");
 
         }catch(error){console.log (error);}
-        return id;
+        return this.id;
     }
 
     async getById(Number){
         let contenidoExtraidoDelArray=null;
         try {
-            archivo().forEach(element => {
+            await this.archivo().forEach(element => {
                 if (element.id==Number)
                     contenidoExtraidoDelArray=element
             });
@@ -43,12 +46,21 @@ class Contenedor{
     }
 
     async getAll(){
-        return (archivo());
+        return (await this.archivo())
+    }
+
+    async getProductRandom() {
+        try {
+            const productos = await this.archivo();
+            const procutoRandom = productos[Math.floor(Math.random() * productos.length)];
+            return procutoRandom;
+        }
+        catch (error) {return error;}
     }
 
     async deleteById(Number){
         try {
-            let contenidoNuevo=archivo.filter(
+            let contenidoNuevo=await this.archivo().filter(
                 (element) => element.id !== Number
             );
             await fs.promises.writeFile( `./${this.name}`, JSON.stringify(contenidoNuevo));
